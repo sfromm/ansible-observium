@@ -1,0 +1,34 @@
+---
+- name: enable and start mariadb
+  service: name=mariadb enabled=yes state=started
+
+- name: create mysql database
+  mysql_db: >-
+    name={{ observium_db_name }}
+    encoding=utf8
+    state=present
+
+- name: create mysql user
+  mysql_user:
+    name={{ observium_db_user }}
+    host={{ item }}
+    password={{ observium_db_pass }}
+    priv={{ observium_db_name }}.*:ALL
+    state=present
+  with_items:
+    - 127.0.0.1
+    - localhost
+
+- name: create my.cnf for observium
+  template: >-
+    src=my.cnf.j2
+    dest={{ observium_path }}/.my.cnf
+    owner={{ observium_user }}
+    group={{ observium_user }}
+    backup=yes
+
+- name: insert mysql database schema
+  command: >-
+    chdir=/opt/observium
+    php /opt/observium/discovery.php -u
+  changed_when: False

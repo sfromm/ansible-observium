@@ -1,0 +1,25 @@
+---
+observium_packages:
+  - cronie
+  - fping
+  - graphviz
+  - httpd
+  - ImageMagick
+  - ipmitool
+  - jwhois
+  - libvirt
+  - mariadb-server
+  - mariadb
+  - MySQL-python
+  - net-snmp
+  - net-snmp-utils
+  - php
+  - php-mysql
+  - php-gd
+  - php-ldap
+  - php-mcrypt
+  - php-pear
+  - php-posix
+  - rrdtool
+  - subversion
+  - wget

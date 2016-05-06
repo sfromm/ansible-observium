@@ -1,0 +1,11 @@
+---
+- name: template rrdcached service unit
+  template: >-
+    src=rrdcached.service.j2
+    dest=/etc/systemd/system/rrdcached.service
+    owner=root
+    group=root
+    mode=0644
+
+- name: enable and start rrdcached
+  service: name=rrdcached enabled=yes state=started

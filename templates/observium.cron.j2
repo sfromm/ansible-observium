@@ -1,0 +1,5 @@
+# ansible managed
+# observium crontab
+{% for cron in observium_cron_jobs %}
+{{ cron }}
+{% endfor %}

@@ -1,0 +1,17 @@
+---
+- name: install epel repository
+  yum: name=epel-release state=installed
+
+- name: install rpmforge gpg key
+  rpm_key: >-
+    key=http://apt.sw.be/RPM-GPG-KEY.dag.txt
+    state=present
+
+- name: install rpmforge repository
+  yum: name={{ item }} state=installed
+  with_items:
+    - http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-{{ rpmforge_release }}.rf.{{ ansible_architecture }}.rpm
+
+- name: install prerequisites
+  yum: name={{ item }} state=installed
+  with_items: "{{ observium_packages }}"

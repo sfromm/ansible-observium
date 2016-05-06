@@ -1,0 +1,74 @@
+---
+rpmforge_release: 0.5.3-1.el7
+observium_use_subscription: no
+observium_svn_branch: stable
+observium_svn_url: http://svn.observium.org/svn/observium
+observium_svn_password: ""
+observium_community_url: http://www.observium.org/observium-community-latest.tar.gz
+observium_path: /opt/observium
+observium_user: root
+#
+observium_web_mouseover: "TRUE"
+#
+observium_db_name: observium
+observium_db_user: observium
+observium_db_pass: observium_please_change
+observium_db_host: localhost
+#
+observium_auth_mechanism: mysql
+observium_ldap_version: "3"
+observium_ldap_server: localhost
+observium_ldap_port: 389
+observium_ldap_starttls: require
+observium_ldap_prefix: "uid="
+observium_ldap_suffix: ",ou=People,dc=example,dc=com"
+observium_ldap_group: ""
+observium_ldap_groupbase: "ou=Group,dc=example,dc=com"
+observium_ldap_groupmemberattr: "memberUid"
+observium_ldap_emailattr: "mail"
+observium_auth_ldap_groups: []
+#
+observium_rrdcached_socket: unix:/var/run/rrdcached.sock
+observium_rrdcached_journal: /var/lib/rrdcached/journal/
+observium_rrdcached_pidfile: /var/run/rrdcached.pid
+observium_rrdcached_wtimeout: 1800
+observium_rrdcached_delay: 1800
+observium_rrdcached_ftimeout: 3600
+apache_group: apache
+#
+observium_email_default: foo
+observium_email_from: "nobody@{{ ansible_domain }}"
+observium_email_backend: sendmail
+observium_email_sendmail_path: /usr/sbin/sendmail
+#
+observium_poller_threads: 2
+#
+observium_snmp_version: "v2c"
+observium_snmp_timeout: 1
+observium_snmp_retries: 5
+observium_snmp_max_rep: 10
+observium_snmp_communities:
+  - public
+#
+observium_alerts_bgp_whitelist: []
+#
+observium_ping_timeout: 500
+observium_ping_retries: 3
+observium_fping: /usr/sbin/fping
+#
+observium_rancid_configs: []
+observium_rancid_version: 2
+#
+observium_collectd_dir: /var/lib/collectd/rrd
+#
+observium_smokeping_dir: /var/lib/smokeping
+#
+observium_geocoding_dns: yes
+#
+observium_directories:
+  - { path: "{{ observium_path }}/logs", owner: apache, group: apache, mode: "0755" }
+  - { path: "{{ observium_path }}/rrd",  owner: apache, group: apache, mode: "0755" }
+observium_cron_jobs:
+  - "33  */6 * * *  root  /opt/observium/discovery.php -h all > /dev/null 2>&1"
+  - "7   *   * * *  root  /opt/observium/discovery.php -h new > /dev/null 2>&1"
+  - "*/5 *   * * *  root  /opt/observium/poller-wrapper.py {{ observium_poller_threads }} > /dev/null 2>&1"

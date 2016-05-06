@@ -1,0 +1,14 @@
+---
+- name: get list of discovered devices from observium
+  command: mysql -ssNe "select hostname from devices" observium
+  sudo_user: "{{ observium_user }}"
+  register: observium_discovered_devices
+  changed_when: False
+
+- name: add devices to observium for discovery
+  command: >-
+    chdir={{ observium_path }}
+    php add_device.php {{ item }}
+  sudo_user: "{{ observium_user }}"
+  with_items: observium_devices
+  when: item not in observium_discovered_devices.stdout_lines

@@ -1,0 +1,15 @@
+---
+- name: enable seboolean httpd_can_network_connect
+  seboolean: name={{ item }} state=on persistent=yes
+  with_items:
+    - httpd_can_connect_ldap
+    - httpd_can_network_connect
+
+- name: manage selinux contexts
+  when: not observium_stat.stat.exists
+  command: >-
+    semanage fcontext -a -t {{ item.setype }} "{{ item.path }}"
+  with_items:
+    - { path: "{{ observium_rrdcached_socket }}", setype: httpd_sys_rw_content_t }
+    - { path: "{{ observium_path }}/rrd(/.*)?",   setype: httpd_sys_rw_content_t }
+    - { path: "{{ observium_path }}/logs(/.*)?",   setype: httpd_log_t }

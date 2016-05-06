@@ -1,0 +1,82 @@
+<?php
+
+## Check http://www.observium.org/wiki/Configuration_Options for documentation of these settings
+
+// Database config ---  This MUST be configured
+$config['db_host'] = '{{ observium_db_host }}';
+$config['db_user'] = '{{ observium_db_user }}';
+$config['db_pass'] = '{{ observium_db_pass }}';
+$config['db_name'] = '{{ observium_db_name }}';
+$config['db_extension']  = 'mysqli';
+
+// Base directory
+$config['install_dir'] = "/opt/observium";
+
+// Authentication Model
+$config['auth_mechanism']      = "{{ observium_auth_mechanism }}";
+$config['auth_ldap_version']   = {{ observium_ldap_version }};
+$config['auth_ldap_server']    = "{{ observium_ldap_server }}";
+$config['auth_ldap_port']      = {{ observium_ldap_port }};
+$config['auth_ldap_starttls']  = "{{ observium_ldap_starttls }}";
+$config['auth_ldap_prefix']    = "{{ observium_ldap_prefix }}";
+$config['auth_ldap_suffix']    = "{{ observium_ldap_suffix }}";
+{% if observium_ldap_group %}$config['auth_ldap_group']     = "{{ observium_ldap_group }}";{% endif %}
+$config['auth_ldap_groupbase']       = "{{ observium_ldap_groupbase }}";
+$config['auth_ldap_groupmemberattr'] = "{{ observium_ldap_groupmemberattr }}";
+{% for group in observium_auth_ldap_groups %}
+$config['auth_ldap_groups']['{{ group.name }}']['level'] = {{ group.level }};
+{% endfor %}
+
+// WEB
+$config['web_mouseover'] = {{ observium_web_mouseover }};
+
+// SNMP
+$config['snmp']['retries'] = {{ observium_snmp_retries }};
+$config['snmp']['timeout'] = {{ observium_snmp_timeout }};
+$config['snmp']['version'] = {{ observium_snmp_version }};
+$config['snmp']['max-rep'] = {{ observium_snmp_max_rep }};
+$config['snmp']['community'] = array("{{ '", "'.join(observium_snmp_communities) }}");
+
+// FPing
+$config['fping'] = "{{ observium_fping }}";
+$config['fping6'] = "{{ observium_fping }}6";
+$config['ping']['retries'] = {{ observium_ping_retries }};
+$config['ping']['timeout'] = {{ observium_ping_timeout }};
+
+// RRDCached
+$config['rrdcached'] = "{{ observium_rrdcached_socket }}";
+
+// RANCID
+{% for path in observium_rancid_configs %}
+$config['rancid_configs'][] = "{{ path }}";
+{% endfor %}
+
+{% if observium_collectd_dir %}
+// COLLECTD
+$config['collectd_dir']     = "{{ observium_collectd_dir }}";
+{% endif %}
+
+{% if observium_smokeping_dir %}
+# SMOKEPING
+$config['smokeping']['dir']   = "{{ observium_smokeping_dir }}";
+{% endif %}
+
+{% if observium_alerts_bgp_whitelist %}
+{% for asn in observium_alerts_bgp_whitelist %}
+$config['alerts']['bgp']['whitelist'][]    = "{{ asn }}";
+{% endfor %}
+{% endif %}
+
+$config['geocoding']['dns'] = {{ 'TRUE' if observium_geocoding_dns else 'FALSE' }};
+
+// Enable alerter (not available in CE)
+#$config['poller-wrapper']['alerter'] = TRUE;
+
+// Set up a default alerter (email to a single address)
+$config['email']['default']       = "{{ observium_email_default }}";
+$config['email']['from']          = "{{ observium_email_from }}";
+$config['email']['default_only']  = TRUE;
+$config['email']['backend']       = "{{ observium_email_backend }}";
+$config['email']['sendmail_path'] = "{{ observium_email_sendmail_path }}";
+
+// End config.php
