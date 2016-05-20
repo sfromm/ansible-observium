@@ -10,5 +10,5 @@
     chdir={{ observium_path }}
     php add_device.php {{ item }}
   sudo_user: "{{ observium_user }}"
-  with_items: observium_devices
+  with_items: "{{ observium_devices }}"
   when: item not in observium_discovered_devices.stdout_lines
