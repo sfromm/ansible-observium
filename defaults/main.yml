@@ -2,7 +2,8 @@
 rpmforge_release: 0.5.3-1.el7
 observium_use_subscription: no
 observium_svn_branch: stable
-observium_svn_url: http://svn.observium.org/svn/observium
+observium_svn_url: http://svn.observium.org/svn/observium/branches
+observium_svn_username: ""
 observium_svn_password: ""
 observium_community_url: http://www.observium.org/observium-community-latest.tar.gz
 observium_path: /opt/observium

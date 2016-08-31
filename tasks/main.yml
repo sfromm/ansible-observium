@@ -22,6 +22,7 @@
   subversion: >-
     dest=/opt/observium
     repo={{ observium_svn_url }}/{{ observium_svn_branch }}
+    username={{ observium_svn_username }}
     password={{ observium_svn_password }}
 
 - name: check if observium community edition is downloaded
