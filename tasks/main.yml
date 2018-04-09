@@ -2,7 +2,7 @@
 - name: include os-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- include: setup-redhat.yml
+- include_tasks: setup-redhat.yml
   when: ansible_os_family == "RedHat"
 
 - name: check if observium path exists
@@ -44,7 +44,7 @@
     tar xzf {{ observium_get_url.dest }}
 
 - name: include selinux tasks
-  include: selinux.yml
+  include_tasks: selinux.yml
   when: ansible_selinux.status == 'enabled'
 
 - name: create observium directories
@@ -64,9 +64,9 @@
     group={{ observium_user }}
     backup=yes
 
-- include: rrdcached.yml
+- include_tasks: rrdcached.yml
 
-- include: mariadb.yml
+- include_tasks: mariadb.yml
 
 - name: template observium crontab
   template: >-
@@ -76,4 +76,4 @@
     group=root
     mode=0644
 
-- include: devices.yml
+- include_tasks: devices.yml
